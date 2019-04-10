@@ -1,0 +1,84 @@
+server:
+  port: 8572
+
+#spring
+spring:
+  application:
+    name: js-download-process
+  redis:
+    cluster:
+      nodes: 192.168.1.201:7001,192.168.1.201:7002,192.168.1.202:7003,192.168.1.202:7004,192.168.1.203:7005,192.168.1.203:7006
+    password: jsdz@1234
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:oracle:thin:@192.168.1.188:1521:orcl
+    username: scott2
+    password: scott
+    filters: stat,wall,log4j
+    maxActive: 10
+    initialSize: 5
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+    connection-properties: druid.stat.merggSql=ture;druid.stat.slowSqlMillis=5000
+
+
+  cloud:
+    zookeeper:
+      connect-string: 192.168.1.200:2181,192.168.1.206:2181,192.168.1.207:2181
+      discovery:
+        instance-host: 192.168.1.40  #开发机器的IP地址
+        instance-port: ${server.port}
+
+#mybatis
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.js.download.manager.model
+  global-config:
+    #刷新mapper 调试神器
+    db-config:
+      #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+      id-type: ID_WORKER
+      #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+      field-strategy: NOT_EMPTY
+      #驼峰下划线转换
+      column-underline: true
+      #数据库大写下划线转换
+      #capital-mode: true
+      #逻辑删除配置
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+      db-type: oracle
+    refresh: true
+      #自定义填充策略接口实现
+      #meta-object-handler: com.baomidou.springboot.xxx
+      #自定义SQL注入器
+    #sql-injector: com.baomidou.springboot.xxx
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+##logging
+#logging:
+#  level: warn
+logging:
+  level:
+    com:
+      js:
+        enfor:
+          manage:
+            mapper: debug
+
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        data:
+#          mongodb:
+#            core: DEBUG

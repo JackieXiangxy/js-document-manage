@@ -1,0 +1,25 @@
+spring:
+  profiles:
+    active: dev
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      enabled: true         #是否启用 health端点
+      show-details: ALWAYS  #显示完整的健康详情
+
+info:
+  project:
+    Name: '@project.artifactId@'
+    Version:  '@project.version@'
+    Start: 'java -jar @project.artifactId@'
+  Author: '项雨'
+  Summary:
+    '
+           spring-admin测试客户端<br>
+                            访问路径http://192.168.1.207:8888
+        '
